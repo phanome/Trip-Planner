@@ -62,7 +62,7 @@ Open **[http://localhost:5173](http://localhost:5173)** in your browser.
   ```
 - **Refinement Loop (Stretch Goal)**: Follow-up modifications (e.g. *"Add a ramen place on Day 1"*) are sent alongside the existing itinerary JSON to preserve structure and edit incrementally.
 
-# 3. Handling Bad AI Output & Edge Cases (20%)
+# 3. Handling Bad AI Output & Edge Cases 
 The app employs a multi-tier defense system against unpredictable AI output:
 
 | Scenario / Bad Output | Handling & Recovery Strategy |
@@ -74,7 +74,7 @@ The app employs a multi-tier defense system against unpredictable AI output:
 | **Network & Quota Failures** | Categorized into typed errors (`network`, `api`, `config`, `schema`, `parse`) with one-click **↺ Retry**. |
 | **Technical Debug Accordion** | Errors contain an expandable technical debug drawer for inspectability without confusing regular users. |
 
-### 4. UI/UX & Product Sense (15%)
+### 4. UI/UX & Product Sense 
 - **Collapsible Stops**: Stop cards are compact by default; clicking any stop smoothly expands rich details (insider tips, estimated costs, duration, address).
 - **Undo Toast on Removal**: Deleting any stop or day triggers a 5-second toast with an instant `↩ Undo` button.
 - **Dark Glassmorphism Design System**: Custom Vanilla CSS with radial gradient glow blobs, typography (Inter + Outfit), and smooth micro-interactions.

@@ -4,16 +4,16 @@ A fast, responsive React application that converts free-form travel ideas into r
 
 ---
 
-## 🚀 Quickstart
+# Quickstart
 
-### 1. Setup Environment
+# 1. Setup Environment
 Ensure your `.env` file in the project root contains your Gemini API Key:
 ```env
-VITE_GEMINI_API_KEY=your_gemini_api_key_here
+VITE_GEMINI_API_KEY=AQ.Ab8RN6KoYYonvVC41-dPbcp8SkuM7nQT1Bj9bJ7HUiwdGZlgVA
 ```
-*(Get a free key from [Google AI Studio](https://aistudio.google.com/app/apikey))*.
 
-### 2. Install & Run
+
+# 2. Install & Run
 ```bash
 npm install
 npm run dev
@@ -22,9 +22,9 @@ Open **[http://localhost:5173](http://localhost:5173)** in your browser.
 
 ---
 
-## 🏛️ Architecture & Evaluation Overview
+# Architecture & Evaluation Overview
 
-### 1. React & Frontend Architecture (25%)
+# 1. React & Frontend Architecture 
 - **Functional Components & Hooks**: Clean component hierarchy with single-responsibility design (`TripInput`, `ItineraryView`, `DayCard`, `StopItem`, `ErrorBanner`, `LoadingState`).
 - **State Machine Hook (`useItinerary`)**: Centralizes the `idle | loading | success | error` lifecycle.
 - **Race Condition & Stale Response Protection**: Every request is assigned a monotonic `requestId`. If a user re-submits while a request is in flight, earlier responses are automatically discarded.
@@ -32,7 +32,7 @@ Open **[http://localhost:5173](http://localhost:5173)** in your browser.
 - **Drag-and-Drop Reordering**: Integrated with `@dnd-kit/core` and `@dnd-kit/sortable` supporting both day-level reordering and stop-level reordering within days.
 - **Session Persistence**: Automatic sync with `localStorage` allowing users to restore previous itineraries across page reloads.
 
-### 2. AI Integration & Data Handling (25%)
+# 2. AI Integration & Data Handling 
 - **Model**: `gemini-3.6-flash` via the `@google/generative-ai` SDK.
 - **Enforced JSON Response Schema**: Rather than relying purely on text prompting, the API specifies a formal `responseSchema` (`SchemaType.OBJECT`) which forces the model at the token decoding level to produce strict JSON conforming to:
   ```json
@@ -62,7 +62,7 @@ Open **[http://localhost:5173](http://localhost:5173)** in your browser.
   ```
 - **Refinement Loop (Stretch Goal)**: Follow-up modifications (e.g. *"Add a ramen place on Day 1"*) are sent alongside the existing itinerary JSON to preserve structure and edit incrementally.
 
-### 3. Handling Bad AI Output & Edge Cases (20%)
+# 3. Handling Bad AI Output & Edge Cases (20%)
 The app employs a multi-tier defense system against unpredictable AI output:
 
 | Scenario / Bad Output | Handling & Recovery Strategy |
@@ -81,12 +81,12 @@ The app employs a multi-tier defense system against unpredictable AI output:
 - **Copy Summary & Markdown Export**: One-click formatted markdown export to share or save itineraries.
 - **Mobile Responsive**: Fully responsive layout with touch-friendly drag constraints.
 
-### 5. Communication & Understanding (15%)
+# 5. Communication & Understanding 
 - Comprehensive documentation detailing engineering choices, safety boundaries, and prompt-structure co-design.
 
 ---
 
-## 🛠️ Stack
+# Stack
 
 - **Framework**: React 19 + Vite 6
 - **AI SDK**: `@google/generative-ai` (`gemini-3.6-flash`)
@@ -96,7 +96,7 @@ The app employs a multi-tier defense system against unpredictable AI output:
 
 ---
 
-## ⏱️ Time Spent Breakdown
+# Time Spent Breakdown
 
 | Area | Effort |
 |---|---|
@@ -112,6 +112,6 @@ The app employs a multi-tier defense system against unpredictable AI output:
 
 ---
 
-## 📝 Known Limitations
+# Known Limitations
 - **Cross-day Dragging**: Stops can be reordered within a given day; cross-day drag-and-drop can be enabled by unifying drop containers in a future release.
 - **Client-side API Key**: In production environments, the Gemini API call should be routed through a backend server / edge function to protect API credentials.

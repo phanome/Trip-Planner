@@ -23,6 +23,7 @@ export default function App() {
     generate,
     refine,
     retry,
+    loadDemo,
     clearSession,
     saveCurrentSession,
     loadSession,
@@ -191,6 +192,25 @@ export default function App() {
               <p className="empty-subtitle">
                 Describe your dream trip above and click <strong>✨ Plan my trip</strong>
               </p>
+              <div style={{ marginTop: "1rem", marginBottom: "1.5rem" }}>
+                <button
+                  type="button"
+                  className="demo-btn"
+                  onClick={loadDemo}
+                  style={{
+                    padding: "0.6rem 1.2rem",
+                    background: "rgba(244, 63, 94, 0.15)",
+                    border: "1px solid rgba(244, 63, 94, 0.4)",
+                    color: "#fda4af",
+                    borderRadius: "9999px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                  }}
+                >
+                  ✨ Or explore interactive demo itinerary
+                </button>
+              </div>
               <div className="empty-features">
                 <div className="feature-chip">📅 Day-by-day structure</div>
                 <div className="feature-chip">🔀 Drag to reorder</div>
@@ -205,7 +225,7 @@ export default function App() {
           {status === "loading" && <LoadingState />}
 
           {status === "error" && (
-            <ErrorBanner error={error} onRetry={retry} />
+            <ErrorBanner error={error} onRetry={retry} onLoadDemo={loadDemo} />
           )}
 
           {status === "success" && itinerary && (
@@ -227,7 +247,7 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <p>Powered by Gemini 3.6 Flash · Built with React + Vite</p>
+        <p>Powered by Groq AI · Built with React + Vite</p>
       </footer>
     </div>
   );

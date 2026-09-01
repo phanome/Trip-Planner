@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { generateItinerary, refineItinerary } from "../api/gemini";
+import { generateItinerary, refineItinerary } from "../api/groq";
 import { parseItinerary } from "../utils/parseItinerary";
+import { SAMPLE_ICELAND_ITINERARY } from "../data/sampleItinerary";
 
 const ACTIVE_STORAGE_KEY = "trip_planner_active_session_v1";
 const SESSIONS_STORAGE_KEY = "trip_planner_saved_sessions_v1";
@@ -249,6 +250,18 @@ export function useItinerary() {
     showToast("🗑 Session deleted");
   }, [activeSessionId]);
 
+  // Load sample / demo itinerary for preview without API key
+  const loadDemo = useCallback(() => {
+    abortRef.current?.abort();
+    setItinerary(SAMPLE_ICELAND_ITINERARY);
+    setLastPrompt("Road trip through Iceland for 4 days — Northern Lights, waterfalls, and volcanic landscapes.");
+    setActiveSessionId(null);
+    setStatus("success");
+    setError(null);
+    setWarnings([]);
+    showToast("✨ Loaded Iceland Demo Itinerary!");
+  }, []);
+
   // Reorder days
   const reorderDays = useCallback((fromIndex, toIndex) => {
     setItinerary((prev) => {
@@ -386,6 +399,7 @@ export function useItinerary() {
     generate,
     refine,
     retry,
+    loadDemo,
     clearSession,
     saveCurrentSession,
     loadSession,

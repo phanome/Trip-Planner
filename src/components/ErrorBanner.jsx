@@ -1,7 +1,19 @@
 import { useState } from "react";
+import { saveCustomApiKey, getApiKey } from "../api/groq";
 
-export default function ErrorBanner({ error, onRetry }) {
+export default function ErrorBanner({ error, onRetry, onLoadDemo }) {
   const [showDetails, setShowDetails] = useState(false);
+  const [keyInput, setKeyInput] = useState(() => getApiKey() || "");
+  const [keySaved, setKeySaved] = useState(false);
+
+  const handleSaveKey = (e) => {
+    e.preventDefault();
+    if (keyInput.trim()) {
+      saveCustomApiKey(keyInput.trim());
+      setKeySaved(true);
+      if (onRetry) onRetry();
+    }
+  };
 
   const messages = {
     network: {
@@ -26,8 +38,8 @@ export default function ErrorBanner({ error, onRetry }) {
     },
     config: {
       icon: "🔑",
-      title: "Missing API Key",
-      body: "Add your VITE_GEMINI_API_KEY to the .env file and restart the server.",
+      title: "Groq API Key Required",
+      body: "Please provide a valid Groq API key (starts with gsk_) to generate itineraries with AI.",
     },
   };
 
@@ -39,6 +51,24 @@ export default function ErrorBanner({ error, onRetry }) {
       <div className="error-content">
         <strong className="error-title">{meta.title}</strong>
         <p className="error-body">{meta.body}</p>
+
+        {error?.type === "config" && (
+          <form className="api-key-inline-form" onSubmit={handleSaveKey}>
+            <input
+              type="password"
+              className="api-key-input"
+              placeholder="Paste Groq key (gsk_...) here"
+              value={keyInput}
+              onChange={(e) => {
+                setKeyInput(e.target.value);
+                setKeySaved(false);
+              }}
+            />
+            <button type="submit" className="api-key-save-btn">
+              {keySaved ? "✓ Saved!" : "Save & Retry"}
+            </button>
+          </form>
+        )}
 
         {(error?.message || error?.rawSnippet) && (
           <div className="error-debug-section">
@@ -68,11 +98,23 @@ export default function ErrorBanner({ error, onRetry }) {
         )}
       </div>
 
-      {error?.type !== "config" && onRetry && (
-        <button className="retry-btn" onClick={onRetry} aria-label="Retry generating itinerary">
-          ↺ Retry
-        </button>
-      )}
+      <div className="error-actions">
+        {onLoadDemo && (
+          <button
+            type="button"
+            className="demo-btn"
+            onClick={onLoadDemo}
+            title="Preview all interactive features with sample Iceland data"
+          >
+            ✨ Load Demo Trip
+          </button>
+        )}
+        {error?.type !== "config" && onRetry && (
+          <button className="retry-btn" onClick={onRetry} aria-label="Retry generating itinerary">
+            ↺ Retry
+          </button>
+        )}
+      </div>
     </div>
   );
 }

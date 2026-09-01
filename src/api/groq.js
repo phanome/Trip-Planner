@@ -5,7 +5,7 @@ export function getApiKey() {
       localStorage.getItem("trip_planner_api_key");
     if (customKey?.trim()) return customKey.trim();
   }
-  return import.meta.env.VITE_GROQ_API_KEY || "";
+  return import.meta.env.VITE_GROQ_API_KEY || import.meta.env.VITE_GEMINI_API_KEY || "";
 }
 
 export function saveCustomApiKey(key) {

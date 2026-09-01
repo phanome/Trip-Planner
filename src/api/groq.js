@@ -1,11 +1,23 @@
 export function getApiKey() {
+  const envKey =
+    (typeof __GROQ_KEY__ !== "undefined" && __GROQ_KEY__) ||
+    import.meta.env.VITE_GROQ_API_KEY ||
+    import.meta.env.VITE_GEMINI_API_KEY ||
+    "";
+
+  if (envKey && typeof envKey === "string" && envKey.trim().length > 0) {
+    return envKey.trim();
+  }
+
   if (typeof window !== "undefined") {
     const customKey =
       localStorage.getItem("groq_api_key") ||
-      localStorage.getItem("trip_planner_api_key");
+      localStorage.getItem("trip_planner_api_key") ||
+      localStorage.getItem("gemini_api_key_custom");
     if (customKey?.trim()) return customKey.trim();
   }
-  return import.meta.env.VITE_GROQ_API_KEY || import.meta.env.VITE_GEMINI_API_KEY || "";
+
+  return "";
 }
 
 export function saveCustomApiKey(key) {
@@ -16,6 +28,7 @@ export function saveCustomApiKey(key) {
     } else {
       localStorage.removeItem("groq_api_key");
       localStorage.removeItem("trip_planner_api_key");
+      localStorage.removeItem("gemini_api_key_custom");
     }
   }
 }
@@ -65,7 +78,7 @@ Return the updated itinerary JSON conforming strictly to the requested schema.
 ${ITINERARY_JSON_SCHEMA_DESCRIPTION}`;
 
 /**
- * Call Groq Cloud API with model fallback and JSON parsing.
+ * Call Groq Cloud API with fast model order and JSON parsing.
  */
 async function callGroq(prompt, systemInstruction, signal) {
   const key = getApiKey();
@@ -79,7 +92,7 @@ async function callGroq(prompt, systemInstruction, signal) {
     };
   }
 
-  const models = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "groq/compound"];
+  const models = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "groq/compound"];
   let lastError = null;
 
   for (const model of models) {
